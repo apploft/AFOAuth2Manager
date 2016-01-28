@@ -103,7 +103,7 @@
                                                        password:(NSString *)password
                                                           scope:(NSString *)scope
                                                         success:(void (^)(AFOAuthCredential *credential, id response))success
-                                                        failure:(void (^)(NSError *error))failure;
+                                                        failure:(void (^)(NSError *error, id response))failure;
 
 /**
  Creates and enqueues an `AFHTTPRequestOperation` to authenticate against the server with a designated scope.
@@ -116,7 +116,7 @@
 - (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                                           scope:(NSString *)scope
                                                         success:(void (^)(AFOAuthCredential *credential, id response))success
-                                                        failure:(void (^)(NSError *error))failure;
+                                                        failure:(void (^)(NSError *error, id response))failure;
 
 /**
  Creates and enqueues an `AFHTTPRequestOperation` to authenticate against the server using the specified refresh token.
@@ -129,7 +129,7 @@
 - (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                                    refreshToken:(NSString *)refreshToken
                                                         success:(void (^)(AFOAuthCredential *credential, id response))success
-                                                        failure:(void (^)(NSError *error))failure;
+                                                        failure:(void (^)(NSError *error, id response))failure;
 
 /**
  Creates and enqueues an `AFHTTPRequestOperation` to authenticate against the server with an authorization code, redirecting to a specified URI upon successful authentication.
@@ -144,7 +144,7 @@
                                                            code:(NSString *)code
                                                     redirectURI:(NSString *)uri
                                                         success:(void (^)(AFOAuthCredential *credential, id response))success
-                                                        failure:(void (^)(NSError *error))failure;
+                                                        failure:(void (^)(NSError *error, id response))failure;
 
 /**
  Creates and enqueues an `AFHTTPRequestOperation` to authenticate against the server with the specified parameters.
@@ -157,7 +157,7 @@
 - (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                                      parameters:(NSDictionary *)parameters
                                                         success:(void (^)(AFOAuthCredential *credential, id response))success
-                                                        failure:(void (^)(NSError *error))failure;
+                                                        failure:(void (^)(NSError *error, id response))failure;
 
 @end
 

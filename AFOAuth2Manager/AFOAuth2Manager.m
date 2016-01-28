@@ -145,7 +145,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
                                                        password:(NSString *)password
                                                           scope:(NSString *)scope
                                                         success:(void (^)(AFOAuthCredential *credential, id response))success
-                                                        failure:(void (^)(NSError *error))failure
+                                                        failure:(void (^)(NSError *error, id response))failure
 {
     NSParameterAssert(username);
     NSParameterAssert(password);
@@ -164,7 +164,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 - (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                                           scope:(NSString *)scope
                                                         success:(void (^)(AFOAuthCredential *credential, id response))success
-                                                        failure:(void (^)(NSError *error))failure
+                                                        failure:(void (^)(NSError *error, id response))failure
 {
     NSParameterAssert(scope);
     
@@ -179,7 +179,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 - (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                                    refreshToken:(NSString *)refreshToken
                                                         success:(void (^)(AFOAuthCredential *credential, id response))success
-                                                        failure:(void (^)(NSError *error))failure
+                                                        failure:(void (^)(NSError *error, id response))failure
 {
     NSParameterAssert(refreshToken);
     
@@ -195,7 +195,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
                                                            code:(NSString *)code
                                                     redirectURI:(NSString *)uri
                                                         success:(void (^)(AFOAuthCredential *credential, id response))success
-                                                        failure:(void (^)(NSError *error))failure
+                                                        failure:(void (^)(NSError *error, id response))failure
 {
     NSParameterAssert(code);
     NSParameterAssert(uri);
@@ -212,7 +212,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 - (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                                      parameters:(NSDictionary *)parameters
                                                         success:(void (^)(AFOAuthCredential *credential, id response))success
-                                                        failure:(void (^)(NSError *error))failure
+                                                        failure:(void (^)(NSError *error, id response))failure
 {
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
     if (!self.useHTTPBasicAuthentication) {
@@ -224,7 +224,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
     AFHTTPRequestOperation *requestOperation = [self POST:URLString parameters:parameters success:^(__unused AFHTTPRequestOperation *operation, id responseObject) {
         if (!responseObject) {
             if (failure) {
-                failure(nil);
+                failure(nil, responseObject);
             }
             
             return;
@@ -232,7 +232,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
         
         if ([responseObject valueForKey:@"error"]) {
             if (failure) {
-                failure(AFErrorFromRFC6749Section5_2Error(responseObject));
+                failure(AFErrorFromRFC6749Section5_2Error(responseObject), responseObject);
             }
             
             return;
@@ -266,7 +266,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
         }
     } failure:^(__unused AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
-            failure(error);
+            failure(error, operation.responseObject);
         }
     }];
     
