@@ -81,6 +81,14 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 
 #pragma mark -
 
+@interface AFOAuthCredential ()
+@property (readwrite, nonatomic, copy) NSString *accessToken;
+@property (readwrite, nonatomic, copy) NSString *tokenType;
+@property (readwrite, nonatomic, copy) NSString *refreshToken;
+@property (readwrite, nonatomic, copy) NSDate *expiration;
+@property (readwrite, nonatomic, getter = isQuestionnaireFinished) BOOL questionnaireFinished;
+@end
+
 @interface AFOAuth2Manager ()
 @property (readwrite, nonatomic, copy) NSString *serviceProviderIdentifier;
 @property (readwrite, nonatomic, copy) NSString *clientID;
@@ -261,6 +269,11 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
             [credential setExpiration:expireDate];
         }
         
+        id questionnaireFinished = [responseObject valueForKey:@"questionnaireFinished"];
+        if (questionnaireFinished) {
+            credential.questionnaireFinished = [questionnaireFinished boolValue];
+        }
+        
         if (success) {
             success(credential, responseObject);
         }
@@ -277,12 +290,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 
 #pragma mark -
 
-@interface AFOAuthCredential ()
-@property (readwrite, nonatomic, copy) NSString *accessToken;
-@property (readwrite, nonatomic, copy) NSString *tokenType;
-@property (readwrite, nonatomic, copy) NSString *refreshToken;
-@property (readwrite, nonatomic, copy) NSDate *expiration;
-@end
+
 
 @implementation AFOAuthCredential
 @dynamic expired;

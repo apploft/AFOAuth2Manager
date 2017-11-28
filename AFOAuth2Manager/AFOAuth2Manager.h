@@ -194,6 +194,8 @@
  */
 @property (readonly, nonatomic, assign, getter = isExpired) BOOL expired;
 
+@property (readonly, nonatomic, getter = isQuestionnaireFinished) BOOL questionnaireFinished;
+
 ///--------------------------------------------
 /// @name Creating and Initializing Credentials
 ///--------------------------------------------
