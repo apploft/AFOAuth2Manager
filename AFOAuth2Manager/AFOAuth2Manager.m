@@ -33,6 +33,8 @@ NSString * const kAFOAuthRefreshGrantType = @"refresh_token";
 
 NSString * const kAFOAuth2CredentialServiceName = @"AFOAuthCredentialService";
 
+static NSString *const kQuestionnaireFinishedKey = @"QuestionnaireFinishedKey";
+
 static NSDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifier) {
     NSCParameterAssert(identifier);
     
@@ -425,6 +427,9 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
     self.refreshToken = [decoder decodeObjectForKey:NSStringFromSelector(@selector(refreshToken))];
     self.expiration = [decoder decodeObjectForKey:NSStringFromSelector(@selector(expiration))];
     
+    NSNumber *qf = [decoder decodeObjectForKey:kQuestionnaireFinishedKey];
+    self.questionnaireFinished = qf != nil ? [qf boolValue] : YES;
+
     return self;
 }
 
@@ -433,6 +438,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
     [encoder encodeObject:self.tokenType forKey:NSStringFromSelector(@selector(tokenType))];
     [encoder encodeObject:self.refreshToken forKey:NSStringFromSelector(@selector(refreshToken))];
     [encoder encodeObject:self.expiration forKey:NSStringFromSelector(@selector(expiration))];
+    [encoder encodeObject:@(self.questionnaireFinished) forKey:kQuestionnaireFinishedKey];
 }
 
 @end
